@@ -101,6 +101,7 @@ router.post("/", auth, async (req, res) => {
     targetUserId === conversation.userId1
       ? (conversation.user1Data = user)
       : (conversation.user2Data = user);
+      
     conversation.unreadBy = [targetUserId];
     conversation.updatedAt = Date.now();
     conversation.recentMessage = message;
