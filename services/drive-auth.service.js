@@ -2,6 +2,7 @@ const { google } = require("googleapis");
 const path = require("path");
 
 const getDriveService = () => {
+  console.log(__dirname, '>>>>>>>>>>>>>>')
   const KEYFILEPATH = path.join(__dirname, "gDriveService.json");
   const SCOPES = ["https://www.googleapis.com/auth/drive"];
 
