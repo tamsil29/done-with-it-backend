@@ -22,6 +22,7 @@ const listingSchema = mongoose.Schema({
     latitude: { type: Number },
     longitude: { type: Number },
   }),
+  createdAt:{type: Date, required: true, default: Date.now, }
 });
 
 const Listing = mongoose.model("Listing", listingSchema);

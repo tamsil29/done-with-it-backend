@@ -9,7 +9,12 @@ const validateId = require("../middleware/mongoId-validation");
 const mongoose = require('mongoose');
 
 router.get("/", auth, async (req, res) => {
-  const listings = await Listing.find();
+  let listings
+  if(req.query.categoryId){
+    listings = await Listing.find({'categoryId._id' : req.query.categoryId}).sort("-createdAt");;
+  }else{
+    listings = await Listing.find().sort("-createdAt");
+  }
   res.status(200).send({ success: true, data: listings });
 });
 

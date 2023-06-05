@@ -5,7 +5,7 @@ const auth = require("../middleware/auth");
 const _ = require("lodash");
 
 router.get("/", async (req, res) => {
-  const category = await Category.find();
+  const category = await Category.find().sort({label: 1});
   res.send({ success: true, data: category });
 });
 
