@@ -6,6 +6,7 @@ const _ = require("lodash");
 const auth = require("../middleware/auth");
 const { User } = require("../models/user");
 const validateId = require("../middleware/mongoId-validation");
+const mongoose = require('mongoose');
 
 router.get("/", auth, async (req, res) => {
   const listings = await Listing.find();
@@ -13,19 +14,29 @@ router.get("/", auth, async (req, res) => {
 });
 
 router.get("/self", auth, async (req, res) => {
-  const listings = await Listing.find({ "createdBy._id": req.user._id });
+  const listings = await Listing.find({
+    $or: [
+      { "createdBy._id": mongoose.Types.ObjectId(req.user._id) },
+      { "createdBy._id": req.user._id },
+    ],
+  });
   res.status(200).send({ success: true, data: listings });
 });
 
 router.get("/:id", [auth, validateId], async (req, res) => {
   const listing = await Listing.findById(req.params.id);
-  if(!listing) return res.status(404).send({ success:false, message: "Listing not found!"})
+  if (!listing)
+    return res
+      .status(404)
+      .send({ success: false, message: "Listing not found!" });
 
-  const user = await User.findById(listing?.createdBy?._id).select("-password -expoPushToken");
-  listing.createdBy = user
+  const user = await User.findById(listing?.createdBy?._id).select(
+    "-password -expoPushToken"
+  );
+  listing.createdBy = user;
 
   res.status(200).send({ success: true, data: listing });
-})
+});
 
 router.post("/", auth, async (req, res) => {
   const { error } = validateListing(req.body);
