@@ -24,7 +24,7 @@ router.get("/self", auth, async (req, res) => {
       { "createdBy._id": mongoose.Types.ObjectId(req.user._id) },
       { "createdBy._id": req.user._id },
     ],
-  });
+  }).sort("-createdAt");
   res.status(200).send({ success: true, data: listings });
 });
 
@@ -90,14 +90,19 @@ router.post("/", auth, async (req, res) => {
 
 module.exports = router;
 
-// if (req.body.imageId) {
-//   const imageId = await Image.findById(req.body.imageId);
+router.delete("/:id", auth, async (req, res) => {
+  const user = await User.findById(req.user._id)
 
-//   if (!imageId)
-//     return res.status(404).send({
-//       success: false,
-//       message: "Image with the given Id could not be found",
-//     });
+  const listing = await Listing.findByIdAndDelete(req.params.id);
 
-//   req.body.imageId = new Image(imageId);
-// }
+  if (!listing)
+    return res.status(404).send({
+      success: false,
+      message: "Listing with the given id could not be found!",
+    });
+
+    user.numberofListings--;
+    await user.save();
+
+  res.send({ success: true, data: listing });
+});
