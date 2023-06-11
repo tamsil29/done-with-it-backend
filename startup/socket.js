@@ -33,6 +33,11 @@ module.exports = function (app, httpServer) {
       socket.to(conversationId).emit('recieve-message', newMessage)
       updateConversation(conversationId, newMessage, user)
     });
+
+    socket.on("sender-typing", (isTyping, conversationId) => {
+      console.log({isTyping})
+      socket.to(conversationId).emit('typing', isTyping)
+    })
   });
 };
 
