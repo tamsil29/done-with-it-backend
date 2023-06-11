@@ -29,7 +29,6 @@ module.exports = function (app, httpServer) {
         message: message,
         createdBy: JSON.parse(user),
       });
-      console.log(newMessage);
       cb(newMessage)
       socket.to(conversationId).emit('recieve-message', newMessage)
       updateConversation(conversationId, newMessage, user)
