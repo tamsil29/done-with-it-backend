@@ -30,13 +30,13 @@ module.exports = function (app, httpServer) {
         createdBy: JSON.parse(user),
       });
       cb(newMessage)
-      socket.to(conversationId).emit('recieve-message', newMessage)
+      socket.broadcast.to(conversationId).emit('recieve-message', newMessage)
       updateConversation(conversationId, newMessage, user)
     });
 
     socket.on("sender-typing", (isTyping, conversationId) => {
       console.log({isTyping})
-      socket.to(conversationId).emit('typing', isTyping)
+      socket.broadcast.to(conversationId).emit('typing', isTyping)
     })
   });
 };
