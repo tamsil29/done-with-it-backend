@@ -17,7 +17,12 @@ module.exports = function (app, httpServer) {
       console.log(`success in joining ${room}`);
     });
 
-    socket.on("send-message", (message, conversationId, user) => {
+    socket.on("leave-conversation", (room) => {
+      socket.leave(room);
+      console.log(`success in leaving ${room}`);
+    });
+
+    socket.on("send-message", (message, conversationId, user, cb) => {
       const newMessage = new Message({
         conversationId: conversationId,
         createdAt: Date.now(),
@@ -25,6 +30,7 @@ module.exports = function (app, httpServer) {
         createdBy: JSON.parse(user),
       });
       console.log(newMessage);
+      cb(newMessage)
       socket.to(conversationId).emit('recieve-message', newMessage)
       updateConversation(conversationId, newMessage, user)
     });
