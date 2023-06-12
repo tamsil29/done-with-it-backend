@@ -24,7 +24,7 @@ module.exports = function (app, httpServer) {
 
     socket.on("send-message", (message, conversationId, attachedMessage, user, cb) => {
       if(!message) return;
-      console.log(message, conversationId, attachedMessage, user)
+      // console.log(message, conversationId, attachedMessage, user)
       const newMessage = new Message({
         conversationId: conversationId,
         createdAt: Date.now(),
