@@ -29,8 +29,8 @@ module.exports = function (app, httpServer) {
         message: message,
         createdBy: JSON.parse(user),
       });
-      cb(newMessage)
       socket.broadcast.to(conversationId).emit('recieve-message', newMessage)
+      cb(newMessage)
       updateConversation(conversationId, newMessage, user)
     });
 
