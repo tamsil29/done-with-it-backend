@@ -23,6 +23,7 @@ module.exports = function (app, httpServer) {
     });
 
     socket.on("send-message", (message, conversationId, user, cb) => {
+      if(!message) return;
       const newMessage = new Message({
         conversationId: conversationId,
         createdAt: Date.now(),

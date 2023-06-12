@@ -9,7 +9,7 @@ const {
   sendPushNotificationOfChat,
 } = require("../utilities/createPushNotification");
 
-const messageLimit = 40;
+const messageLimit = 30;
 
 router.get("/", auth, async (req, res) => {
   const conversations = await Conversation.find({
