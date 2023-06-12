@@ -22,13 +22,15 @@ module.exports = function (app, httpServer) {
       // console.log(`success in leaving ${room}`);
     });
 
-    socket.on("send-message", (message, conversationId, user, cb) => {
+    socket.on("send-message", (message, conversationId, attachedMessage, user, cb) => {
       if(!message) return;
+      console.log(message, conversationId, attachedMessage, user)
       const newMessage = new Message({
         conversationId: conversationId,
         createdAt: Date.now(),
         message: message,
         createdBy: JSON.parse(user),
+        attachedMessage: JSON.parse(attachedMessage)
       });
       socket.broadcast.to(conversationId).emit('recieve-message', newMessage)
       cb(newMessage)

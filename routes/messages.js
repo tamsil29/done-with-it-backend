@@ -90,6 +90,7 @@ router.post("/", auth, async (req, res) => {
       createdAt: Date.now(),
       message: req.body.message,
       createdBy: req.user,
+      attachedMessage: req.body.attachedMessage
     });
 
     const targetUserId =
