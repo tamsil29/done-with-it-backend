@@ -9,17 +9,17 @@ module.exports = function (app, httpServer) {
   const io = new Server(httpServer);
   // app.set("socketio", io);
   io.on("connection", (socket) => {
-    console.log("socket connected", socket.id);
+    // console.log("socket connected", socket.id);
 
     socket.on("join-conversation", (room, cb) => {
       socket.join(room);
       cb("success");
-      console.log(`success in joining ${room}`);
+      // console.log(`success in joining ${room}`);
     });
 
     socket.on("leave-conversation", (room) => {
       socket.leave(room);
-      console.log(`success in leaving ${room}`);
+      // console.log(`success in leaving ${room}`);
     });
 
     socket.on("send-message", (message, conversationId, user, cb) => {
@@ -34,9 +34,9 @@ module.exports = function (app, httpServer) {
       updateConversation(conversationId, newMessage, user)
     });
 
-    socket.on("sender-typing", (isTyping, conversationId) => {
-      console.log({isTyping})
-      socket.broadcast.to(conversationId).emit('typing', isTyping)
+    socket.on("sender-typing", (isTyping, conversationId, userId) => {
+      // console.log({isTyping})
+      socket.broadcast.to(conversationId).emit('typing', isTyping, userId)
     })
   });
 };
