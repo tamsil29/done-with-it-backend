@@ -6,6 +6,7 @@ const messageSchema = mongoose.Schema({
   createdBy: { type: Object, required: true },
   createdAt: { type: String, required: true },
   message: { type: String, required: true },
+  attachedMessage: {type: Object}
 });
 
 const Message = mongoose.model("Message", messageSchema);
@@ -29,7 +30,7 @@ const conversationSchema = mongoose.Schema({
     default: Date.now,
   },
   recentMessage: { type: Object },
-  unreadBy: { type: Array, default: [] }
+  unreadBy: { type: Array, default: [] },
 });
 
 const Conversation = mongoose.model("Conversation", conversationSchema);
